@@ -1,0 +1,1375 @@
+from aiogram import Bot, Dispatcher, types
+from aiogram.utils import executor
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, ReplyKeyboardMarkup, KeyboardButton
+from aiogram.dispatcher.filters import Command
+from aiogram.utils.callback_data import CallbackData, CallbackDataFilter
+import logging
+
+JoinedFile = open('путь к файлу', 'r')
+JoinedUsers = set()
+for line in JoinedFile:
+    JoinedUsers.add(line.strip())
+JoinedFile.close()
+
+bot = Bot(token='token')
+dp = Dispatcher(bot)
+
+menu = ReplyKeyboardMarkup(keyboard=
+[
+    [
+        KeyboardButton(text='Расписание 🎆')
+    ]
+
+],
+    resize_keyboard=True
+)
+
+callback_rasp = CallbackData('rasp', 'item_name')
+callback_day = CallbackData('day', 'item')
+callback_byk = CallbackData('byk', 'by')
+
+byk = InlineKeyboardMarkup(row_width=2,
+                           inline_keyboard=[
+                               [
+                                   InlineKeyboardButton(
+                                       text='А',
+                                       callback_data=callback_byk.new(by='А')
+                                   ),
+                                   InlineKeyboardButton(
+                                       text='Б',
+                                       callback_data=callback_byk.new(by='Б')
+                                   )
+                               ],
+
+                           ])
+
+byk1 = InlineKeyboardMarkup(row_width=2,
+                            inline_keyboard=[
+                                [
+                                    InlineKeyboardButton(
+                                        text='А',
+                                        callback_data=callback_byk.new(by='А1')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Б',
+                                        callback_data=callback_byk.new(by='Б1')
+                                    )
+                                ],
+
+                            ])
+
+byk2 = InlineKeyboardMarkup(row_width=2,
+                            inline_keyboard=[
+                                [
+                                    InlineKeyboardButton(
+                                        text='А',
+                                        callback_data=callback_byk.new(by='А2')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Б',
+                                        callback_data=callback_byk.new(by='Б2')
+                                    )
+                                ],
+
+                            ])
+
+day = InlineKeyboardMarkup(row_width=2,
+                           inline_keyboard=[
+                               [
+                                   InlineKeyboardButton(
+                                       text='Понедельник',
+                                       callback_data=callback_day.new(item='PN')
+                                   ),
+                                   InlineKeyboardButton(
+                                       text='Вторник',
+                                       callback_data=callback_day.new(item='VT')
+                                   )
+                               ],
+                               [
+                                   InlineKeyboardButton(
+                                       text='Среда',
+                                       callback_data=callback_day.new(item='CP')
+                                   ),
+                                   InlineKeyboardButton(
+                                       text='Четверг',
+                                       callback_data=callback_day.new(item='WT')
+                                   )
+                               ],
+                               [
+                                   InlineKeyboardButton(
+                                       text='Пятница',
+                                       callback_data=callback_day.new(item='PT')
+                                   )
+                               ]
+                           ])
+day1 = InlineKeyboardMarkup(row_width=2,
+                            inline_keyboard=[
+                                [
+                                    InlineKeyboardButton(
+                                        text='Понедельник',
+                                        callback_data=callback_day.new(item='PN1')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Вторник',
+                                        callback_data=callback_day.new(item='VT1')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Среда',
+                                        callback_data=callback_day.new(item='CP1')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Четверг',
+                                        callback_data=callback_day.new(item='WT1')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Пятница',
+                                        callback_data=callback_day.new(item='PT1')
+                                    )
+                                ]
+                            ])
+day2 = InlineKeyboardMarkup(row_width=2,
+                            inline_keyboard=[
+                                [
+                                    InlineKeyboardButton(
+                                        text='Понедельник',
+                                        callback_data=callback_day.new(item='PN2')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Вторник',
+                                        callback_data=callback_day.new(item='VT2')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Среда',
+                                        callback_data=callback_day.new(item='CP2')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Четверг',
+                                        callback_data=callback_day.new(item='WT2')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Пятница',
+                                        callback_data=callback_day.new(item='PT2')
+                                    )
+                                ]
+                            ])
+day3 = InlineKeyboardMarkup(row_width=2,
+                            inline_keyboard=[
+                                [
+                                    InlineKeyboardButton(
+                                        text='Понедельник',
+                                        callback_data=callback_day.new(item='PN3')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Вторник',
+                                        callback_data=callback_day.new(item='VT3')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Среда',
+                                        callback_data=callback_day.new(item='CP3')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Четверг',
+                                        callback_data=callback_day.new(item='WT3')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Пятница',
+                                        callback_data=callback_day.new(item='PT3')
+                                    )
+                                ]
+                            ])
+day4 = InlineKeyboardMarkup(row_width=2,
+                            inline_keyboard=[
+                                [
+                                    InlineKeyboardButton(
+                                        text='Понедельник',
+                                        callback_data=callback_day.new(item='PN4')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Вторник',
+                                        callback_data=callback_day.new(item='VT4')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Среда',
+                                        callback_data=callback_day.new(item='CP4')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Четверг',
+                                        callback_data=callback_day.new(item='WT4')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Пятница',
+                                        callback_data=callback_day.new(item='PT4')
+                                    )
+                                ]
+                            ])
+day5 = InlineKeyboardMarkup(row_width=2,
+                            inline_keyboard=[
+                                [
+                                    InlineKeyboardButton(
+                                        text='Понедельник',
+                                        callback_data=callback_day.new(item='PN5')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Вторник',
+                                        callback_data=callback_day.new(item='VT5')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Среда',
+                                        callback_data=callback_day.new(item='CP5')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Четверг',
+                                        callback_data=callback_day.new(item='WT5')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Пятница',
+                                        callback_data=callback_day.new(item='PT5')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Суббота',
+                                        callback_data=callback_day.new(item='SB5')
+                                    )
+                                ]
+                            ])
+day6 = InlineKeyboardMarkup(row_width=2,
+                            inline_keyboard=[
+                                [
+                                    InlineKeyboardButton(
+                                        text='Понедельник',
+                                        callback_data=callback_day.new(item='PN6')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Вторник',
+                                        callback_data=callback_day.new(item='VT6')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Среда',
+                                        callback_data=callback_day.new(item='CP6')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Четверг',
+                                        callback_data=callback_day.new(item='WT6')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Пятница',
+                                        callback_data=callback_day.new(item='PT6')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Суббота',
+                                        callback_data=callback_day.new(item='SB6')
+                                    )
+                                ],
+                            ])
+
+day7 = InlineKeyboardMarkup(row_width=2,
+                            inline_keyboard=[
+                                [
+                                    InlineKeyboardButton(
+                                        text='Понедельник',
+                                        callback_data=callback_day.new(item='PN7')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Вторник',
+                                        callback_data=callback_day.new(item='VT7')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Среда',
+                                        callback_data=callback_day.new(item='CP7')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Четверг',
+                                        callback_data=callback_day.new(item='WT7')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Пятница',
+                                        callback_data=callback_day.new(item='PT7')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Суббота',
+                                        callback_data=callback_day.new(item='SB7')
+                                    )
+                                ],
+                            ])
+
+day8 = InlineKeyboardMarkup(row_width=2,
+                            inline_keyboard=[
+                                [
+                                    InlineKeyboardButton(
+                                        text='Понедельник',
+                                        callback_data=callback_day.new(item='PN8')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Вторник',
+                                        callback_data=callback_day.new(item='VT8')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Среда',
+                                        callback_data=callback_day.new(item='CP8')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Четверг',
+                                        callback_data=callback_day.new(item='WT8')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Пятница',
+                                        callback_data=callback_day.new(item='PT8')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Суббота',
+                                        callback_data=callback_day.new(item='SB8')
+                                    )
+                                ],
+                            ])
+
+day9 = InlineKeyboardMarkup(row_width=2,
+                            inline_keyboard=[
+                                [
+                                    InlineKeyboardButton(
+                                        text='Понедельник',
+                                        callback_data=callback_day.new(item='PN9')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Вторник',
+                                        callback_data=callback_day.new(item='VT9')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Среда',
+                                        callback_data=callback_day.new(item='CP9')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Четверг',
+                                        callback_data=callback_day.new(item='WT9')
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text='Пятница',
+                                        callback_data=callback_day.new(item='PT9')
+                                    ),
+                                    InlineKeyboardButton(
+                                        text='Суббота',
+                                        callback_data=callback_day.new(item='SB9')
+                                    )
+                                ],
+                            ])
+
+choice = InlineKeyboardMarkup(row_width=2,
+                              inline_keyboard=[
+                                  [
+                                      InlineKeyboardButton(
+                                          text='5 класс',
+                                          callback_data=callback_rasp.new(item_name='five')
+                                      ),
+                                      InlineKeyboardButton(
+                                          text='6 класс',
+                                          callback_data=callback_rasp.new(item_name='six')
+                                      ),
+                                  ],
+                                  [
+                                      InlineKeyboardButton(
+                                          text='7 класс',
+                                          callback_data=callback_rasp.new(item_name='seven')
+                                      ),
+                                      InlineKeyboardButton(
+                                          text='8 класс',
+                                          callback_data=callback_rasp.new(item_name='eight')
+                                      ),
+                                  ],
+                                  [
+                                      InlineKeyboardButton(
+                                          text='9 класс',
+                                          callback_data=callback_rasp.new(item_name='nine')
+                                      ),
+                                      InlineKeyboardButton(
+                                          text='10 класс',
+                                          callback_data=callback_rasp.new(item_name='ten')
+                                      ),
+                                  ],
+                                  [
+                                      InlineKeyboardButton(
+                                          text='11 класс',
+                                          callback_data=callback_rasp.new(item_name='ton')
+                                      ),
+                                  ],
+                              ])
+
+
+@dp.message_handler(Command('start'))
+async def startJoin(message):
+    if not str(message.chat.id) in JoinedUsers:
+        JoinedFile = open('Путь к файлу txt', "a")
+        JoinedFile.write(str(message.chat.id) + "\n")
+        JoinedUsers.add(message.chat.id)
+    await message.answer(text='Чтобы получить расписание нажмите на кнопку ниже',
+                         reply_markup=menu)
+
+@dp.message_handler(Command('spec'))
+async def sendall(message: types.Message):
+    if message.chat.type == 'private':
+        if message.from_user.id == id_user:
+            text = message.text[5:]
+            for user in JoinedUsers:
+                await bot.send_message(user, text)
+
+
+@dp.message_handler(Command('speci'))
+async def sendall(message: types.Message):
+    if message.chat.type == 'private':
+        if message.from_user.id == id_user:
+            text = message.text[6:]
+            for user in JoinedUsers:
+                await bot.send_message(user, text)
+
+@dp.message_handler(Command('specl'))
+async def sendall(message: types.Message):
+    if message.chat.type == 'private':
+        if message.from_user.id == id_user:
+            text = message.text[6:]
+            for user in JoinedUsers:
+                await bot.send_message(user, text)
+
+
+
+
+@dp.message_handler(text='расписание')
+async def show_items(message: types.Message):
+  await message.answer(text='Расписание какого класса вы хотите получить?',
+                       reply_markup=choice)
+
+@dp.callback_query_handler(callback_rasp.filter(item_name='five'))
+async def five_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('Вы выбрали, что хотите узнать расписание 5 класса, выберите день недели',
+                              reply_markup=day)
+
+@dp.callback_query_handler(callback_day.filter(item='PN'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('5 класс (ПН) \n'
+                              '_____________________ \n'
+                              '1.Разговоры о важном  \n'
+                              '2.Русский язык  \n'
+                              '3.Математика  \n'
+                              '4.Информатика 1/ Английский 2  \n'
+                              '5.Информатика 2/ Английский 1  \n'
+                              '6.Литература  \n'
+                              '7.Физ-ра  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='VT'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('5 класс (ВТ) \n'
+                              '_____________________ \n'
+                              '1.История  \n'
+                              '2.Математика  \n'
+                              '3.Обж  \n'
+                              '4.Английский 1/2  \n'
+                              '5.Русский  \n'
+                              '6.Биология  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='CP'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('5 класс (СР) \n'
+                              '_____________________ \n'
+                              '1.ИЗО  \n'
+                              '2.Математика  \n'
+                              '3.Музыка  \n'
+                              '4.ОДНКНР  \n'
+                              '5.Русский  \n'
+                              '6.Литература  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='WT'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('5 класс (ЧТ) \n'
+                              '_____________________ \n'
+                              '1.Литература  \n'
+                              '2.Русский  \n'
+                              '3.Математика  \n'
+                              '4.Английский 1/2  \n'
+                              '5.Технология 1/2  \n'
+                              '6.Технология 1/2  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='PT'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('5 класс (ПТ) \n'
+                              '_____________________ \n'
+                              '1.География  \n'
+                              '2.Математика  \n'
+                              '3.История  \n'
+                              '4.Русский  \n'
+                              '5.Физ-ра  \n')
+
+
+@dp.callback_query_handler(callback_rasp.filter(item_name='six'))
+async def six_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('Вы выбрали, что хотите узнать расписание 6 класса, выберите букву своего класса',
+                              reply_markup=byk)
+
+@dp.callback_query_handler(callback_byk.filter(by='А'))
+async def day1_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('Вы выбрали, что хотите узнать расписание 6А класса, выберите день недели',
+                                  reply_markup=day1)
+
+@dp.callback_query_handler(callback_day.filter(item='PN1'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('6А класс (ПН) \n'
+                              '1.Разговоры о важном  \n'
+                              '_____________________ \n'
+                              '2.Русский  \n'
+                              '3.Русский  \n'
+                              '4.История  \n'
+                              '5.Английский 1/2  \n'
+                              '6.Литература  \n'
+                              '7.ОБЖ  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='VT1'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('6А класс (ВТ) \n'
+                              '_____________________ \n'
+                              '1.Русский  \n'
+                              '2.Физ-ра  \n'
+                              '3.Биология  \n'
+                              '4.Математика  \n'
+                              '5.Математика  \n'
+                              '6.ИЗО  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='CP1'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('6А класс (СР) \n'
+                              '_____________________ \n'
+                              '1.Русский  \n'
+                              '2.Русский  \n'
+                              '3.Физ-ра  \n'
+                              '4.Общество  \n'
+                              '5.Музыка \n'
+                              '6.Литра  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='WT1'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('6А класс (ЧТ) \n'
+                              '_____________________ \n'
+                              '1.Математика  \n'
+                              '2.Русский  \n'
+                              '3.Технология 1/2  \n'
+                              '4.Технология 1/2  \n'
+                              '5.Литература  \n'
+                              '6.Английский 1/2  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='PT1'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('6А класс (ПТ) \n'
+                              '_____________________ \n'
+                              '1.История  \n'
+                              '2.Математика  \n'
+                              '3.Математика  \n'
+                              '4.Английский 1/2  \n'
+                              '5.География  \n'
+                              '6.Физ-ра  \n')
+
+@dp.callback_query_handler(callback_byk.filter(by='Б'))
+async def day2_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('Вы выбрали, что хотите узнать расписание 6Б класса, выберите день недели',
+                                  reply_markup=day2)
+
+@dp.callback_query_handler(callback_day.filter(item='PN2'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('6Б класс (ПН) \n'
+                              '_____________________ \n'
+                              '1.Разговоры о важном  \n'
+                              '2.История  \n'
+                              '3.Физ-ра  \n'
+                              '4.Обж  \n'
+                              '5.Русский  \n'
+                              '6.Русский  \n'
+                              '7.Литература  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='VT2'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('6Б класс (ВТ) \n'
+                              '_____________________ \n'
+                              '1.Математика  \n'
+                              '2.Математика  \n'
+                              '3.История  \n'
+                              '4.Биология  \n'
+                              '5.ИЗО  \n'
+                              '6.Физ-ра  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='CP2'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('6Б класс (СР) \n'
+                              '_____________________ \n'
+                              '1.Музыка  \n'
+                              '2.Общество  \n'
+                              '3.Литература  \n'
+                              '4.Русский  \n'
+                              '5.Русский  \n'
+                              '6.Английский  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='WT2'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('6Б класс (ЧТ) \n'
+                              '_____________________ \n'
+                              '1.Английский  \n'
+                              '2.Математика  \n'
+                              '3.Технология 1/2  \n'
+                              '4.Технология 1/2  \n'
+                              '5.Русский  \n'
+                              '6.Литература  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='PT2'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('6Б класс (ПТ) \n'
+                              '_____________________ \n'
+                              '1.Физ-ра  \n'
+                              '2.География  \n'
+                              '3.Английский  \n'
+                              '4.Русский  \n'
+                              '5.Математика  \n'
+                              '6.Математика  \n')
+
+@dp.callback_query_handler(callback_rasp.filter(item_name='seven'))
+async def five_rasp(call: CallbackQuery, callback_data: dict):
+        await call.answer(cache_time=60)
+        logging.info(f'callback_data = {call.data}')
+        logging.info(f'callback_data dict = {callback_data}')
+        await call.message.answer('Вы выбрали, что хотите узнать расписание 7 класса, выберите букву своего класса',
+                                  reply_markup=byk1)
+
+
+@dp.callback_query_handler(callback_byk.filter(by='А1'))
+async def five_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('Вы выбрали, что хотите узнать расписание 7А класса, выберите день недели',
+                              reply_markup=day3)
+
+@dp.callback_query_handler(callback_day.filter(item='PN3'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('7А класс (ПН) \n'
+                              '_____________________ \n'
+                              '1.Разговоры о важном  \n'
+                              '2.География  \n'
+                              '3.История  \n'
+                              '4.Русский  \n'
+                              '5.Русский  \n'
+                              '6.Алгебра  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='VT3'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('7А класс (ВТ) \n'
+                              '_____________________ \n'
+                              '1.Геометрия  \n'
+                              '2.Русский  \n'
+                              '3.Литература  \n'
+                              '4.Физ-ра  \n'
+                              '5.Физ-ра  \n'
+                              '6.Общество  \n'
+                              '7.ОБЖ  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='CP3'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('7А класс (СР) \n'
+                              '_____________________ \n'
+                              '1.Английский  \n'
+                              '2.Физ-ра  \n'
+                              '3.Русский  \n'
+                              '4.Физика  \n'
+                              '5.ИЗО  \n'
+                              '6.Технология  \n'
+                              '7.Технология  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='WT3'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('7А класс (ЧТ) \n'
+                              '_____________________ \n'
+                              '1.Алгебра  \n'
+                              '2.Геометрия  \n'
+                              '3.Литература  \n'
+                              '4.Английский  \n'
+                              '5.Физика  \n'
+                              '6.Музыка  \n'
+                              '7.ИИК СПБ  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='PT3'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('7А класс (ПТ) \n'
+                              '_____________________ \n'
+                              '1.Алгебра  \n'
+                              '2.История  \n'
+                              '3.Информатика  \n'
+                              '4.Информатика  \n'
+                              '5.Английский  \n'
+                              '6.Биология  \n'
+                              '7.География  \n')
+
+@dp.callback_query_handler(callback_byk.filter(by='Б1'))
+async def five_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('Вы выбрали, что хотите узнать расписание 7Б класса, выберите день недели',
+                              reply_markup=day4)
+
+@dp.callback_query_handler(callback_day.filter(item='PN4'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('7Б класс (ПН) \n'
+                              '_____________________ \n'
+                              '1.Разговоры о важном  \n'
+                              '2.Английский 1/2  \n'
+                              '3.Физика  \n'
+                              '4.Алгебра  \n'
+                              '5.История  \n'
+                              '6.Физ-ра  \n'
+                              '7.География  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='VT4'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('7Б класс (ВТ) \n'
+                              '_____________________ \n'
+                              '1.Информатика 2/Английский 1  \n'
+                              '2.Информатика 2/Английский 1  \n'
+                              '3.Физ-ра  \n'
+                              '4.Литература  \n'
+                              '5.Русский  \n'
+                              '6.Геометрия  \n'
+                              '7.Общество  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='CP4'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('7Б класс (СР) \n'
+                              '_____________________ \n'
+                              '1.Алгебра  \n'
+                              '2.ИЗО  \n'
+                              '3.История  \n'
+                              '4.География  \n'
+                              '5.Технология 1/2  \n'
+                              '6.Технология 1/2  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='WT4'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('7Б класс (ЧТ) \n'
+                              '_____________________ \n'
+                              '1.ИИК СПБ  \n'
+                              '2.ОБЖ  \n'
+                              '3.Физика  \n'
+                              '4.Музыка  \n'
+                              '5.Русский  \n'
+                              '6.Русский  \n'
+                              '7.Алгебра  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='PT4'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('7Б класс (ПТ) \n'
+                              '_____________________ \n'
+                              '1.Информатика 1/Английский 2  \n'
+                              '2.Информатика 1/Английский 2  \n'
+                              '3.Биология  \n'
+                              '4.Физ-ра  \n'
+                              '5.Литература  \n'
+                              '6.Русский  \n'
+                              '7.Геометрия  \n')
+
+@dp.callback_query_handler(callback_rasp.filter(item_name='eight'))
+async def five_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('Вы выбрали, что хотите узнать расписание 8 класса, выберите день недели',
+                              reply_markup=day5)
+
+@dp.callback_query_handler(callback_day.filter(item='PN5'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('8 класс (ПН) \n'
+                              '_____________________ \n'
+                              '1.Разговоры о важном  \n'
+                              '2.Физ-ра  \n'
+                              '3.География  \n'
+                              '4.Алгебра  \n'
+                              '5.Геометрия  \n'
+                              '6.Английский 1/2  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='VT5'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('8 класс (ВТ) \n'
+                              '_____________________ \n'
+                              '1.ИИК СПБ  \n'
+                              '2.Химия  \n'
+                              '3.Информатика 2/Английский 1  \n'
+                              '4.Информатика 1/Английский 2  \n'
+                              '5.Русский  \n'
+                              '6.Технология 1/2  \n'
+                              '7.Технология 1/2  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='CP5'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('8 класс (СР) \n'
+                              '_____________________ \n'
+                              '1.Русский  \n'
+                              '2.Литература  \n'
+                              '3.Физика  \n'
+                              '4.ИЗО  \n'
+                              '5.Алгебра  \n'
+                              '6.Геометрия  \n'
+                              '7.Физ-ра  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='WT5'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('8 класс (ЧТ) \n'
+                              '_____________________ \n'
+                              '1.Информатика 1/Английский 2  \n'
+                              '2.Информатика 2/Английский 1  \n'
+                              '3.ОБЖ  \n'
+                              '4.Алгебра  \n'
+                              '5.Общество  \n'
+                              '6.Химия  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='PT5'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('8 класс (ПТ) \n'
+                              '_____________________ \n'
+                              '1.Биология  \n'
+                              '2.Биология  \n'
+                              '3.Русский  \n'
+                              '4.Литература  \n'
+                              '5.История  \n'
+                              '6.Геометрия  \n'
+                              '7.Физ-ра  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='SB5'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('8 класс (СБ) \n'
+                              '_____________________ \n'
+                              '1.История  \n'
+                              '2.География  \n'
+                              '3.МХК  \n'
+                              '4.Физика  \n')
+
+@dp.callback_query_handler(callback_rasp.filter(item_name='nine'))
+async def five_rasp(call: CallbackQuery, callback_data: dict):
+        await call.answer(cache_time=60)
+        logging.info(f'callback_data = {call.data}')
+        logging.info(f'callback_data dict = {callback_data}')
+        await call.message.answer('Вы выбрали, что хотите узнать расписание 9 класса, выберите день недели',
+                                  reply_markup=day6)
+
+@dp.callback_query_handler(callback_day.filter(item='PN6'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('9 класс (ПН) \n'
+                              '_____________________ \n'
+                              '1.Разговоры о важном  \n'
+                              '2.Физика  \n'
+                              '3.Литература  \n'
+                              '4.Русский  \n'
+                              '5.Алгебра  \n'
+                              '6.Биология  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='VT6'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('9 класс (ВТ) \n'
+                              '_____________________ \n'
+                              '1.Химия  \n'
+                              '2.Алгебра  \n'
+                              '3.Геометрия  \n'
+                              '4.Литература  \n'
+                              '5.ИИК СПБ  \n'
+                              '6.Английский 1/2  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='CP6'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('9 класс (СР) \n'
+                              '_____________________ \n'
+                              '1.Общество  \n'
+                              '2.Алгебра  \n'
+                              '3.Биология  \n'
+                              '4.Физика  \n'
+                              '5.Физика  \n'
+                              '6.История  \n'
+                              '7.Физ-ра  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='WT6'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer(
+                              '9 класс (ЧТ) \n'
+                              '_____________________ \n'
+                              'Уроки начинаются в 9:50  \n'
+                              '2.Химия  \n'
+                              '3.Информатика1/Английский2  \n'
+                              '4.Информатика1/Английский2  \n'
+                              '5.Геометрия \n'
+                              '6.Информатика2/Английский1 \n'
+                              '7.Информатика2/Английский1 \n')
+
+@dp.callback_query_handler(callback_day.filter(item='PT6'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('9 класс (ПТ) \n'
+                              '_____________________ \n'
+                              '1.Алгебра  \n'
+                              '2.Русский  \n'
+                              '3.Русский  \n'
+                              '4.География  \n'
+                              '5.Литература  \n'
+                              '6.ОБЖ  \n'
+                              '7.Физ-ра  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='SB6'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('9 класс (СБ) \n'
+                              '_____________________ \n'
+                              '1.География  \n'
+                              '2.МХК  \n'
+                              '3.История  \n'
+                              '4.История  \n'
+                              '5.Физ-ра  \n')
+
+@dp.callback_query_handler(callback_rasp.filter(item_name='ten'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('Вы выбрали, что хотите узнать расписание 10 класса, выберите букву своего класса',
+                              reply_markup=byk2)
+
+@dp.callback_query_handler(callback_byk.filter(by='А2')) # 10 A
+async def five_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('Вы выбрали, что хотите узнать расписание 10А класса, выберите день недели',
+                                  reply_markup=day7)
+
+@dp.callback_query_handler(callback_day.filter(item='PN7'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('10А класс (ПН) \n'
+                              '_____________________ \n'
+                              '1.Разговоры о важном  \n'
+                              '2.Информатика 2/Английский 1  \n'
+                              '3.Информатика 1/Английский 2  \n'
+                              '4.Литература  \n'
+                              '5.Математика  \n'
+                              '6.Физика  \n'
+                              '7.Литература Эл.  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='VT7'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('10А класс (ВТ) \n'
+                              '_____________________ \n'
+                              '1.Русский  \n'
+                              '2.Литература  \n'
+                              '3.История  \n'
+                              '4.История  \n'
+                              '5.Математика  \n'
+                              '6.Математика  \n'
+                              '7.История Эл.  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='CP7'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('10А класс (СР) \n'
+                              '_____________________ \n'
+                              '1.Физ-ра  \n'
+                              '2.ИП  \n'
+                              '3.Литература  \n'
+                              '4.Литература  \n'
+                              '5.География  \n'
+                              '6.Физика  \n'
+                              '7.Биология Эл.  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='WT7'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('10А класс (ЧТ) \n'
+                              '_____________________ \n'
+                              '1.Физ-ра  \n'
+                              '2.Общество  \n'
+                              '3.Право  \n'
+                              '4.Астрономия  \n'
+                              '5.Математика  \n'
+                              '6.Математика  \n'
+                              '7.Химия Эл.1/Англ Эл. 1  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='PT7'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('10А класс (ПТ) \n'
+                              '_____________________ \n'
+                              '1.Русский  \n'
+                              '2.Литература  \n'
+                              '3.История  \n'
+                              '4.История  \n'
+                              '5.ОБЖ  \n'
+                              '6.Английский 1/2  \n'
+                              '7.Английский 1/2  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='SB7'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('10А класс (СБ) \n'
+                              '_____________________ \n'
+                              '1.МХК  \n'
+                              '2.Общество  \n'
+                              '3.Право  \n'
+                              '4.Физ-ра  \n'
+                              '5.Биология  \n')
+
+@dp.callback_query_handler(callback_byk.filter(by='Б2')) # 10 B
+async def five_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('Вы выбрали, что хотите узнать расписание 10Б класса, выберите день недели',
+                                  reply_markup=day8)
+
+@dp.callback_query_handler(callback_day.filter(item='PN8'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('10Б класс (ПН) \n'
+                              '_____________________ \n'
+                              '1.Разговоры о важном  \n'
+                              '2.Математика  \n'
+                              '3.Математика  \n'
+                              '4.Физика  \n'
+                              '5.Литература  \n'
+                              '6.Информатика 1/Английский 2  \n'
+                              '7.Информатика 1/Английский 2  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='VT8'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('10Б класс (ВТ) \n'
+                              '_____________________ \n'
+                              '1.Информатика  \n'
+                              '2.Информатика  \n'
+                              '3.Русский  \n'
+                              '4.Математика  \n'
+                              '5.ИП  \n'
+                              '6.Общество  \n'
+                              '7.Химия Эл.  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='CP8'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('10Б класс (СР) \n'
+                              '_____________________ \n'
+                              '1.Физика  \n'
+                              '2.Физика  \n'
+                              '3.Английский 1/Информатика 2  \n'
+                              '4.Английский 1/Информатика 2  \n'
+                              '5.История  \n'
+                              '6.Литература  \n'
+                              '7.Литература  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='WT8'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('10Б класс (ЧТ) \n'
+                              '_____________________ \n'
+                              '1.Физика  \n'
+                              '2.Физика  \n'
+                              '3.Химия  \n'
+                              '4.Право  \n'
+                              '5.ОБЖ  \n'
+                              '6.Математика  \n'
+                              '7.Английский  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='PT8'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('10Б класс (ПТ) \n'
+                              '_____________________ \n'
+                              '1.Общество  \n'
+                              '2.Математика  \n'
+                              '3.Математика  \n'
+                              '4.Физ-ра  \n'
+                              '5.Физ-ра  \n'
+                              '6.Русский  \n'
+                              '7.Биология Эл. 2/Общество Эл. 1  \n')
+
+
+@dp.callback_query_handler(callback_day.filter(item='SB8'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('10Б класс (СБ) \n'
+                              '_____________________ \n'
+                              '1.Физ-ра  \n'
+                              '2.История  \n'
+                              '3.Астрономия  \n'
+                              '4.География  \n'
+                              '5.История Эл. \n')
+
+
+@dp.callback_query_handler(callback_rasp.filter(item_name='ton')) # 11 класс
+async def five_rasp(call: CallbackQuery, callback_data: dict):
+        await call.answer(cache_time=60)
+        logging.info(f'callback_data = {call.data}')
+        logging.info(f'callback_data dict = {callback_data}')
+        await call.message.answer('Вы выбрали, что хотите узнать расписание 11 класса, выберите день недели',
+                              reply_markup=day9)
+
+@dp.callback_query_handler(callback_day.filter(item='PN9'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('11 класс (ПН) \n'
+                              '_____________________ \n'
+                              '1.Разговоры о важном  \n'
+                              '2.Математика  \n'
+                              '3.Русский  \n'
+                              '4.География  \n'
+                              '5.Физика  \n'
+                              '6.Общество  \n'
+                              '7.Общество Эл.  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='VT9'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('11 класс (ВТ) \n'
+                              '_____________________ \n'
+                              '1.История  \n'
+                              '2.История  \n'
+                              '3.Математика  \n'
+                              '4.Математика  \n'
+                              '5.Химия  \n'
+                              '6.Литература  \n'
+                              '7.Литература Эл.  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='CP9'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('11 класс (СР) \n'
+                              '_____________________ \n'
+                              '1.Информатика  \n'
+                              '2.Информатика  \n'
+                              '3.Математика  \n'
+                              '4.Математика  \n'
+                              '5.ИП  \n'
+                              '6.Английский  \n'
+                              '7.Английский  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='WT9'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('11 класс (ЧТ) \n'
+                              '_____________________ \n'
+                              '1.Английский  \n'
+                              '2.Литература  \n'
+                              '3.Литература  \n'
+                              '4.Общество  \n'
+                              '5.Общество  \n'
+                              '6.Русский Эл 1/2  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='PT9'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('11 класс (ПТ) \n'
+                              '_____________________ \n'
+                              '1.Физ-ра  \n'
+                              '2.История  \n'
+                              '3.Математика Эл.  \n'
+                              '4.ОБЖ  \n'
+                              '5.Биология  \n'
+                              '6.Русский  \n')
+
+@dp.callback_query_handler(callback_day.filter(item='SB9'))
+async def ten_rasp(call: CallbackQuery, callback_data: dict):
+    await call.answer(cache_time=60)
+    logging.info(f'callback_data = {call.data}')
+    logging.info(f'callback_data dict = {callback_data}')
+    await call.message.answer('11 класс (СБ) \n'
+                              '_____________________ \n'
+                              '1.Физика  \n'
+                              '2.Физ-ра  \n'
+                              '3.Физ-ра  \n'
+                              '4.МХК  \n'
+                              '5.История  \n')
+
+executor.start_polling(dp)
